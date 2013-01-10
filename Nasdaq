@@ -1,0 +1,53 @@
+                                                                     
+                                                                     
+                                                                     
+                                             
+##Connects to the RODBC package
+library(RODBC)
+
+##Connect to QMART1P server
+QMART1Pcon <-odbcConnect("QMART1P", "datalab", "datalab")
+
+setwd('C://Users/TIFWAS/Desktop/Market Share')
+
+##function to: Get data for Edge--will be 0s unless going back really far
+
+Myquery.edge <- function(start, finish) {
+  paste("select *
+	FROM DATALAB.EDGE_VOLUME
+	where trd_dt between '",start,"' and '", finish,"'",sep="")
+}
+
+##function to: get data for tape A and B stocks
+
+Myquery.other <- function(start, finish) {
+	paste("select *
+	FROM DATALAB.VOLUME_OTHER_EXCHANGES
+	where trd_dt between '",start,"' and '", finish,"'",sep="")
+}
+
+##function to: Get data for tape C stocks
+
+Myquery.nasdaq <- function(start, finish) {
+	paste("select *
+	FROM DATALAB.VOLUME_NASDAQ
+	where trd_dt between '",start,"' and '", finish,"'",sep="")
+}
+
+##function to: Export to .csv files
+
+Myquery.all <- function(start, finish)  {
+
+tbl_Datalab_Edge_Volume <- sqlQuery(QMART1Pcon, Myquery.edge(start,finish))
+	write.csv(tbl_Datalab_Edge_Volume,file="OUTPUT/tbl_Datalab_Edge_Volume.csv",,row.names=F)
+
+tbl_Datalab_Nasdaq_Volume <- sqlQuery(QMART1Pcon, Myquery.nasdaq(start,finish))
+	write.csv(tbl_Datalab_Nasdaq_Volume,file="OUTPUT/tbl_Datalab_Nasdaq_Volume.csv", row.names=F)
+
+tbl_Datalab_Other_Volume <- sqlQuery(QMART1Pcon, Myquery.other(start,finish))
+	write.csv(tbl_Datalab_Other_Volume,file="OUTPUT/tbl_Datalab_Other_Volume.csv", row.names=F)
+}
+
+
+##Execute query for all tapes at once
+Myquery.all('01jun2011','30jun2011')
