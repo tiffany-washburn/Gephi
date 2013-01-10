@@ -1,0 +1,31 @@
+##Connects to the RODBC package
+library(RODBC)
+
+##Connect to QMART1P server
+QMART1Pcon <-odbcConnect("QMART1P", "datalab", "datalab")
+
+setwd('C://Users/TIFWAS/Desktop/Market Share') 
+
+## This is equivalent to the "qry_step01_create_datalab_edge_volume" in the Access database
+
+tbl_Datalab_Edge_Volume <- sqlQuery (QMART1Pcon, "SELECT *
+FROM DATALAB.EDGE_VOLUME
+WHERE TRD_DT BETWEEN '01jun2011' AND '30jun2011' "
+)
+
+## This is equivalent to the "qry_step01_create_datalab_cqs_volume" in the Access database
+tbl_Datalab_Other_Volume <- sqlQuery (QMART1Pcon, "SELECT *
+FROM DATALAB.VOLUME_OTHER_EXCHANGES
+WHERE TRD_DT BETWEEN '01jun2011' AND '30jun2011' "
+)
+
+## This is equivalent to the "qry_step01_create_datalab_nasdaq_volume" in the Access database
+tbl_Datalab_Nasdaq_Volume <- sqlQuery (QMART1Pcon, "SELECT *
+FROM DATALAB.VOLUME_NASDAQ
+WHERE TRD_DT BETWEEN '01jun2011' AND '30jun2011' "
+)
+
+write.csv(tbl_Datalab_Edge_Volume,file="OUTPUT/tbl_Datalab_Edge_Volume.csv",sep=",",row.names=F)
+write.csv(tbl_Datalab_Nasdaq_Volume,file="OUTPUT/tbl_Datalab_Nasdaq_Volume.csv",sep=",",row.names=F)
+write.csv(tbl_Datalab_Other_Volume,file="OUTPUT/tbl_Datalab_Other_Volume.csv",sep=",",row.names=F)
+
