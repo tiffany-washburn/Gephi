@@ -2,8 +2,6 @@
 library(RODBC)
 
 ##Connect to QMART1P server
-QMART1Pcon <-odbcConnect("QMART1P", "datalab", "datalab")
-
 setwd('C://Users/TIFWAS/Desktop/Market Share') 
 
 ## This is equivalent to the "qry_step01_create_datalab_edge_volume" in the Access database
