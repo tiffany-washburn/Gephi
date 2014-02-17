@@ -6,7 +6,6 @@
 library(RODBC)
 
 ##Connect to QMART1P server
-QMART1Pcon <-odbcConnect("QMART1P", "datalab", "datalab")
 
 setwd('C://Users/TIFWAS/Desktop/Market Share')
 
